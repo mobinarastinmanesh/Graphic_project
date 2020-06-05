@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>hungry-car</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <style>
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+
+            background-color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+            font-family: arial;
+        }
+        #blocker {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #instructions {
+            width: 100%;
+            height: 100%;
+            display: -webkit-box;
+            display: -moz-box;
+            -webkit-box-orient: horizontal;
+            -moz-box-orient: horizontal;
+            box-orient: horizontal;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            box-pack: center;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            box-align: center;
+            color: #ffffff;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<script src="lib/three.js"></script>
+<script src="lib/Detector.js"></script>
+<script type="text/javascript" src="lib/TrackballControls.js"></script>
+<script type="text/javascript" src="lib/OrbitControls.js"></script>
+<script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
+<script type="text/javascript" src="lib/LegacyJSONLoader.js"></script>
+
+<script>
+    var camera, scene, renderer;
+    var geometry, material, mesh;
+    var controls;
+    var Cube;
+    var car;
+    var raycaster;
+
+    var objectLoader2;
+    var keyboard = new THREEx.KeyboardState();
+    var clock = new THREE.Clock();
+
+
+    init();
+    animate();
+    function init() {
+
+
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.y =-10;
+        camera.position.z =-10;
+
+
+        var reflectionCube = new THREE.CubeTextureLoader()
+            .setPath('texture/cube/skybox/')
+            .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']);
+        reflectionCube.format = THREE.RGBFormat;
+        scene = new THREE.Scene();
+        scene.background = reflectionCube;
+
+        objectLoader2 = new THREE.ObjectLoader();
+        objectLoader2.load("model/camero-2010-low-poly-threejs/camero-2010-low-poly.json", function (obj) {
+            obj.position.z = -25;
+            obj.position.y = -50;
+            obj.position.x = 0;
+            obj.scale.set(10, 10,10);
+            car=obj;
+            scene.add(car);
+        });
+
+
+        var light = new THREE.HemisphereLight(0xffffff, 0x777788, 0.90);
+        light.position.set(0.5, 1, 0.75);
+        scene.add(light);
+
+        raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
+
+        var texture = new THREE.TextureLoader().load('texture/grass_6.jpg');
+        texture.repeat.set(100, 100);
+        texture.wrapS= THREE.RepeatWrapping;
+        texture.wrapT= THREE.RepeatWrapping;
+        texture.magFilter= THREE.NearestFilter;
+        texture.minFilter= THREE.LinearMipMapLinearFilter;
+
+        var surface = new THREE.PlaneGeometry(2000, 1000);
+        var surfaceMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
+        var surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
+        surfaceMesh.rotateX(Math.PI / 2);
+        surfaceMesh.position.y = -50;
+        scene.add(surfaceMesh);
+        window.addEventListener('resize', onWindowResize, false);
+
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(0xffffff);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        window.addEventListener('resize', onWindowResize, false);
+
+        // CONTROLS
+        controls = new THREE.OrbitControls( camera, renderer.domElement );
+        controls.addEventListener('change', renderer);
+        controls.enableDamping= true;
+        controls.dampingFactor= 0.07;
+        controls.enableZoom= false;
+        controls = new THREE.TrackballControls(camera);
+        controls.rotateSpeed= 1.0; controls.zoomSpeed= 1.2;
+        controls.panSpeed=0.8; controls.noZoom= false;
+        controls.noPan= false; controls.staticMoving = true;
+        controls.dynamicDampingFactor= 0.3;
+    }
+
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function appendText(txt) {
+        document.getElementById('message').innerHTML += txt;
+    }
+
+
+    function animate() {
+       
+        var delta = clock.getDelta();
+        var moveDistance = 100 * delta;
+        var rotateAngle = Math.PI / 2 * delta;
+
+
+        if (keyboard.pressed(String.fromCharCode(38)))
+            car.translateZ(-moveDistance);
+        if (keyboard.pressed(String.fromCharCode(40)))
+            car.translateZ(moveDistance);
+
+        if (keyboard.pressed(String.fromCharCode(37)))
+            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+        if (keyboard.pressed(String.fromCharCode(39)))
+            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+
+
+        if (keyboard.pressed("Z")) {
+            car.position.set(0, 1, 0);
+            car.rotation.set(0, 0, 0);
+        }
+
+        if (car) {
+            var relativeCameraOffset = new THREE.Vector3(0,2,6);
+            var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
+            camera.position.x = cameraOffset.x;
+            camera.position.y = cameraOffset.y;
+            camera.position.z = cameraOffset.z;
+            camera.lookAt(car.position);
+        }
+
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+
+    }
+</script>
+</body>
+</html>
