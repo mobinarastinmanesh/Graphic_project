@@ -54,7 +54,7 @@
 <script type="text/javascript" src="lib/OrbitControls.js"></script>
 <script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
 <script type="text/javascript" src="lib/LegacyJSONLoader.js"></script>
-
+<script type="text/javascript" src="lib/GLTFLoader.js"></script>
 <script>
     var camera, scene, renderer;
     var geometry, material, mesh;
@@ -62,11 +62,14 @@
     var Cube;
     var car;
     var raycaster;
-
+    var CubeArray = [];
+    var carrot;
+    var trees;
     var objectLoader2;
+    var objectLoader3;
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
-
+    var tree;
 
     init();
     animate();
@@ -86,16 +89,40 @@
         scene.background = reflectionCube;
 
         objectLoader2 = new THREE.ObjectLoader();
-        objectLoader2.load("model/camero-2010-low-poly-threejs/camero-2010-low-poly.json", function (obj) {
-            obj.position.z = -25;
+        objectLoader2.load("model/car4/porsche-cayman.json", function (obj) {
+            obj.position.z = 0;
             obj.position.y = -50;
-            obj.position.x = 0;
+            obj.position.x =0;
             obj.scale.set(10, 10,10);
             car=obj;
             scene.add(car);
         });
 
+////////////////////////////////////////////////////////////
+        var objects = [];
+        var  objectLoader = new THREE.ObjectLoader();
+        var  tree = new THREE.Object3D();
+        objectLoader.load("model/tree/tree-un.json", function (obj) {
+            for (var i = 0; i <200 ; i++) {
+                var cubeGeometry = new THREE.CubeGeometry(5, 5, 10);
+                var wireMaterial = new THREE.MeshBasicMaterial({color: 0x3b2119, wireframe: true, visible:true});
+                Cube = new THREE.Mesh(cubeGeometry, wireMaterial);
+                CubeArray.push(Cube);
+                var obj2 = obj.clone();
+                obj2.scale.set(2,2,2);
+                obj2.position.x = Math.random() * 2000  -1000 ;
+                obj2.position.y = -65;
+                obj2.position.z = Math.random() *2000  - 1000;
+                obj2.rotateY(-Math.random() * 150 - 27);
+                objects.push(obj2);
+                trees = obj2;
+                tree.add(trees);
 
+            }
+            scene.add(tree);
+        });
+
+///////////////////////////////////////////////////////////////////////
         var light = new THREE.HemisphereLight(0xffffff, 0x777788, 0.90);
         light.position.set(0.5, 1, 0.75);
         scene.add(light);
@@ -109,7 +136,7 @@
         texture.magFilter= THREE.NearestFilter;
         texture.minFilter= THREE.LinearMipMapLinearFilter;
 
-        var surface = new THREE.PlaneGeometry(2000, 1000);
+        var surface = new THREE.PlaneGeometry(2000, 2000);
         var surfaceMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
         var surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
         surfaceMesh.rotateX(Math.PI / 2);
@@ -148,10 +175,16 @@
     function appendText(txt) {
         document.getElementById('message').innerHTML += txt;
     }
+    function Tree() {
 
+        for (var i = 0; i < 10; i++) {
+
+            tree[i] = tree.clone();
+        }
+    }
 
     function animate() {
-       
+
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
         var rotateAngle = Math.PI / 2 * delta;
