@@ -19,13 +19,13 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../PDF _UNIVERSITY/Graphics_982/Graphics-982 USC/3 ThreeJS/three.js-master" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -46,17 +46,19 @@
       <workItem from="1591383051007" duration="305000" />
       <workItem from="1592214517652" duration="41000" />
       <workItem from="1592214667842" duration="77000" />
+      <workItem from="1592222745689" duration="282000" />
+      <workItem from="1592223308387" duration="103000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="597" y="211" key="FileChooserDialogImpl" timestamp="1591362363152">
+    <state x="597" y="211" key="FileChooserDialogImpl" timestamp="1592222826396">
       <screen x="0" y="0" width="1600" height="860" />
     </state>
-    <state x="597" y="211" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1591362363152" />
+    <state x="597" y="211" key="FileChooserDialogImpl/0.0.1600.860@0.0.1600.860" timestamp="1592222826396" />
     <state x="570" y="336" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592214740111">
       <screen x="0" y="0" width="1600" height="860" />
     </state>

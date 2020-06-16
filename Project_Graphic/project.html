@@ -70,7 +70,7 @@
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
     var tree;
-
+    var donut=[300];
     init();
     animate();
     function init() {
@@ -87,7 +87,7 @@
         reflectionCube.format = THREE.RGBFormat;
         scene = new THREE.Scene();
         scene.background = reflectionCube;
-
+//model/car4/porsche-cayman.json
         objectLoader2 = new THREE.ObjectLoader();
         objectLoader2.load("model/car4/porsche-cayman.json", function (obj) {
             obj.position.z = 0;
@@ -97,13 +97,13 @@
             car=obj;
             scene.add(car);
         });
-
+        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 ////////////////////////////////////////////////////////////
         var objects = [];
         var  objectLoader = new THREE.ObjectLoader();
         var  tree = new THREE.Object3D();
         objectLoader.load("model/tree/tree-un.json", function (obj) {
-            for (var i = 0; i <200 ; i++) {
+            for (var i = 0; i <300 ; i++) {
                 var cubeGeometry = new THREE.CubeGeometry(5, 5, 10);
                 var wireMaterial = new THREE.MeshBasicMaterial({color: 0x3b2119, wireframe: true, visible:true});
                 Cube = new THREE.Mesh(cubeGeometry, wireMaterial);
@@ -121,8 +121,104 @@
             }
             scene.add(tree);
         });
+ ///////////////////////////////////////////////////////////////////////
+        var pinkdonut='texture/yami.jfif';
+        var browndonut='texture/brown.jpg';
+        var colorfulldonut='texture/colorfull.jpg';
+        var ndonut='texture/bahbah.jpg';
+        var bluedonut='texture/blue.jfif';
+        var reddonut='texture/red.jfif';
 
-///////////////////////////////////////////////////////////////////////
+
+        var textureTorus1 = new THREE.TextureLoader().load(pinkdonut);
+        var textureTorus2 = new THREE.TextureLoader().load(browndonut);
+        var textureTorus3 = new THREE.TextureLoader().load(colorfulldonut);
+        var textureTorus4 = new THREE.TextureLoader().load(bluedonut);
+        var textureTorus5 = new THREE.TextureLoader().load(ndonut);
+        var textureTorus6 = new THREE.TextureLoader().load(reddonut);
+        var Torusgeometry = new THREE.TorusGeometry(6, 3, 15, 20 );
+
+        var TorusboxMaterial1 = new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus1});
+        var torus1 = new THREE.Mesh( Torusgeometry, TorusboxMaterial1 );
+        var TorusboxMaterial2 = new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus2});
+        var torus2 = new THREE.Mesh( Torusgeometry, TorusboxMaterial2 );
+        var TorusboxMaterial3 = new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus3});
+        var torus3 = new THREE.Mesh( Torusgeometry, TorusboxMaterial3 );
+        var TorusboxMaterial4= new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus4});
+        var torus4 = new THREE.Mesh( Torusgeometry, TorusboxMaterial4 );
+        var TorusboxMaterial5= new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus5});
+        var torus5 = new THREE.Mesh( Torusgeometry, TorusboxMaterial5 );
+        var TorusboxMaterial6= new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus6});
+
+        var torus6 = new THREE.Mesh( Torusgeometry, TorusboxMaterial6 );
+
+        torus1.scale.set(0.7,0.7,0.7);
+        torus2.scale.set(0.7,0.7,0.7);
+        torus3.scale.set(0.7,0.7,0.7);
+        torus4.scale.set(0.7,0.7,0.7);
+        torus5.scale.set(0.7,0.7,0.7);
+        torus6.scale.set(0.7,0.7,0.7);
+
+        for (var j = 0; j < 50; j++) {
+            var r=torus1.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+        for (var j = 50; j < 100; j++) {
+            var r=torus2.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+        for (var j = 100; j < 150; j++) {
+            var r=torus3.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+        for (var j = 150; j < 200; j++) {
+            var r=torus4.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+        for (var j = 200; j < 250; j++) {
+            var r=torus5.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+        for (var j = 250; j < 300; j++) {
+            var r=torus6.clone();
+            r.position.x = Math.random() * 2000 - 1000;
+            r.position.y = -44;
+            r.position.z=Math.random() * 2000 - 1000;
+            donut[j]=r;
+            scene.add(r);
+        }
+//////////////////////////////////////////////////////////////////////////
+        objectLoader3 = new THREE.ObjectLoader();
+        objectLoader3.load("model/icecream/ice-cream-shop.json", function (obj) {
+            obj.position.z = 0;
+            obj.position.y = -50;
+            obj.position.x =90;
+            obj.scale.set(10, 10,10);
+            car=obj;
+            scene.add(car);
+        });
+        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
+//////////////////////////////////////////////////////////////////////////
         var light = new THREE.HemisphereLight(0xffffff, 0x777788, 0.90);
         light.position.set(0.5, 1, 0.75);
         scene.add(light);
@@ -175,15 +271,21 @@
     function appendText(txt) {
         document.getElementById('message').innerHTML += txt;
     }
-    function Tree() {
 
-        for (var i = 0; i < 10; i++) {
 
-            tree[i] = tree.clone();
+    function  rotet() {
+        var t = (Date.now() / 1000);
+        for (var j = 0; j < 300; j++) {
+
+            donut[j].rotation.x = t * 2;
+            donut[j].rotation.y = t / 2;
+            donut[j].rotation.z = t;
         }
-    }
+        controls.update();
 
+    }
     function animate() {
+        rotet();
 
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
