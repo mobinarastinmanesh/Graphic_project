@@ -50,11 +50,14 @@
 
 <script src="lib/three.js"></script>
 <script src="lib/Detector.js"></script>
+<script type="text/javascript" src="lib/Tween.js"></script>
 <script type="text/javascript" src="lib/TrackballControls.js"></script>
 <script type="text/javascript" src="lib/OrbitControls.js"></script>
 <script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
 <script type="text/javascript" src="lib/LegacyJSONLoader.js"></script>
 <script type="text/javascript" src="lib/GLTFLoader.js"></script>
+<script type="text/javascript" src="lib/threex.loop.js"></script>
+
 <script>
     var camera, scene, renderer;
     var geometry, material, mesh;
@@ -70,7 +73,11 @@
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
     var tree;
+    var sound;
+    var audioLoader;
     var donut=[300];
+    var tween;
+    var target = [300];
     init();
     animate();
     function init() {
@@ -87,18 +94,33 @@
         reflectionCube.format = THREE.RGBFormat;
         scene = new THREE.Scene();
         scene.background = reflectionCube;
+        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
+
 //model/car4/porsche-cayman.json
         objectLoader2 = new THREE.ObjectLoader();
-        objectLoader2.load("model/car4/porsche-cayman.json", function (obj) {
+        objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
             obj.position.z = 0;
             obj.position.y = -50;
             obj.position.x =0;
-            obj.scale.set(10, 10,10);
+            obj.scale.set(8, 8,8);
             car=obj;
             scene.add(car);
         });
-        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
-////////////////////////////////////////////////////////////
+ ///////////////////////////////////////////////////////////////////
+        var listener = new THREE.AudioListener();
+        camera.add(listener);
+        audioLoader = new THREE.AudioLoader();
+
+        sound = new THREE.PositionalAudio(listener);
+        audioLoader.load('Fragile.mp3', function (buffer) {
+            sound.setBuffer(buffer);
+            sound.setRefDistance(50);
+            sound.play();
+            sound.loop = true;
+        });
+        scene.add(sound);
+///////////////////////////////////////////////////////////////////////
+
         var objects = [];
         var  objectLoader = new THREE.ObjectLoader();
         var  tree = new THREE.Object3D();
@@ -158,6 +180,11 @@
         torus4.scale.set(0.7,0.7,0.7);
         torus5.scale.set(0.7,0.7,0.7);
         torus6.scale.set(0.7,0.7,0.7);
+        /*
+                tween = new TWEEN.Tween(planeFight.position).to(target, 5000);
+                   tween.delay(200);
+                   tween.easing(TWEEN.Easing.Quartic.InOut);
+        */
 
         for (var j = 0; j < 50; j++) {
             var r=torus1.clone();
@@ -205,6 +232,7 @@
             r.position.y = -44;
             r.position.z=Math.random() * 2000 - 1000;
             donut[j]=r;
+
             scene.add(r);
         }
 //////////////////////////////////////////////////////////////////////////
@@ -273,7 +301,7 @@
     }
 
 
-    function  rotet() {
+    function  rotat() {
         var t = (Date.now() / 700);
         for (var j = 0; j < 300; j++) {
 
@@ -285,7 +313,8 @@
 
     }
     function animate() {
-        rotet();
+
+        rotat();
 
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
@@ -309,7 +338,7 @@
         }
 
         if (car) {
-            var relativeCameraOffset = new THREE.Vector3(0,2,6);
+            var relativeCameraOffset = new THREE.Vector3(0,3,12);
             var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
             camera.position.x = cameraOffset.x;
             camera.position.y = cameraOffset.y;
@@ -321,6 +350,7 @@
         renderer.render(scene, camera);
 
     }
+
 </script>
 </body>
 </html>
