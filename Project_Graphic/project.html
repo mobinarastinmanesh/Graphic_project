@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>hungry-car</title>
+    <title>OGGY</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
@@ -97,15 +97,16 @@
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 
 //model/car4/porsche-cayman.json
-        objectLoader2 = new THREE.ObjectLoader();
-        objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
-            obj.position.z = 0;
-            obj.position.y = -50;
-            obj.position.x =0;
-            obj.scale.set(8, 8,8);
-            car=obj;
-            scene.add(car);
-        });
+       // objectLoader2 = new THREE.ObjectLoader();
+     //   objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
+           // obj.position.z = 0;
+           // obj.position.y = -50;
+         //   obj.position.x =0;
+          //  obj.scale.set(8, 8,8);
+          //  car=obj;
+            //scene.add(car);
+       // });
+
  ///////////////////////////////////////////////////////////////////
         var listener = new THREE.AudioListener();
         camera.add(listener);
@@ -287,6 +288,17 @@
         controls.panSpeed=0.8; controls.noZoom= false;
         controls.noPan= false; controls.staticMoving = true;
         controls.dynamicDampingFactor= 0.3;
+
+        gltfloader1 = new THREE.GLTFLoader();
+
+        gltfloader1.load('model/gltf/oggy/scene.gltf', function (gltf) {
+            oggy = gltf.scene
+            oggy.children[0].children[0].children[0].children[3].visible = false;
+            oggy.scale.set(3,3,3);
+            oggy.position.set(0,-30,0);
+            scene.add(oggy);
+        });
+
     }
 
 
