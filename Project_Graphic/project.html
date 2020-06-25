@@ -107,19 +107,19 @@
             //scene.add(car);
        // });
 
- ///////////////////////////////////////////////////////////////////
+ ///////////////////////////////////////////////////////////////////music
         var listener = new THREE.AudioListener();
         camera.add(listener);
         audioLoader = new THREE.AudioLoader();
-
-        sound = new THREE.PositionalAudio(listener);
-        audioLoader.load('Fragile.mp3', function (buffer) {
-            sound.setBuffer(buffer);
-            sound.setRefDistance(50);
-            sound.play();
-            sound.loop = true;
+        music = new THREE.PositionalAudio(listener);
+        audioLoader.load('music/oggy.mp3', function (buffer) {
+            music.setBuffer(buffer);
+            music.setRefDistance(50);
+            music.play();
+            music.loop = true;
         });
-        scene.add(sound);
+
+        scene.add(music);
 ///////////////////////////////////////////////////////////////////////
 
         var objects = [];
