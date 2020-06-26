@@ -47,7 +47,15 @@
     </style>
 </head>
 <body>
+<div class="container">
 
+    <h3 id="myDIV" class="des float-left">OGGY</h3>
+
+    <!--webGL-->
+    <div id="web-gl">
+
+    </div>
+</div>
 <script src="lib/three.js"></script>
 <script src="lib/Detector.js"></script>
 <script type="text/javascript" src="lib/Tween.js"></script>
@@ -69,7 +77,9 @@
     var trees;
     var objectLoader2;
     var objectLoader3;
+    var objectLoader4;
     var gltfloader1;
+    var gltfloader2;
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
     var tree;
@@ -79,14 +89,18 @@
     var tween;
     var target = [300];
     var car;
+    var truck;
+    var bird;
+    var ant;
+    var lak;
     init();
     animate();
     function init() {
 
 
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
-        camera.position.y =-10;
-        camera.position.z =-10;
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.set(5, 5, 5);
+
 
 
         var reflectionCube = new THREE.CubeTextureLoader()
@@ -114,9 +128,9 @@
 
         var objects = [];
         var  objectLoader = new THREE.ObjectLoader();
-        var  tree = new THREE.Object3D();
+          trees = new THREE.Object3D();
         objectLoader.load("model/tree/tree-un.json", function (obj) {
-            for (var i = 0; i <300 ; i++) {
+            for (var i = 0; i <100 ; i++) {
                 var cubeGeometry = new THREE.CubeGeometry(5, 5, 10);
                 var wireMaterial = new THREE.MeshBasicMaterial({color: 0x3b2119, wireframe: true, visible:true});
                 Cube = new THREE.Mesh(cubeGeometry, wireMaterial);
@@ -128,12 +142,13 @@
                 obj2.position.z = Math.random() *2000  - 1000;
                 obj2.rotateY(-Math.random() * 150 - 27);
                 objects.push(obj2);
-                trees = obj2;
-                tree.add(trees);
+                tree = obj2;
+                trees.add(tree);
 
             }
-            scene.add(tree);
+            scene.add(trees);
         });
+
         ///////////////////////////////////////////////////////////////////////
         var pinkdonut='texture/yami.jfif';
         var browndonut='texture/brown.jpg';
@@ -171,11 +186,7 @@
         torus4.scale.set(0.7,0.7,0.7);
         torus5.scale.set(0.7,0.7,0.7);
         torus6.scale.set(0.7,0.7,0.7);
-        /*
-                tween = new TWEEN.Tween(planeFight.position).to(target, 5000);
-                   tween.delay(200);
-                   tween.easing(TWEEN.Easing.Quartic.InOut);
-        */
+
 
         for (var j = 0; j < 50; j++) {
             var r=torus1.clone();
@@ -278,9 +289,8 @@
         controls.panSpeed=0.8; controls.noZoom= false;
         controls.noPan= false; controls.staticMoving = true;
         controls.dynamicDampingFactor= 0.3;
-
+////////gltfs
         gltfloader1 = new THREE.GLTFLoader();
-
         gltfloader1.load('model/gltf/oggy/scene.gltf', function (gltf) {
             oggy = gltf.scene
             oggy.children[0].children[0].children[0].children[3].visible = false;
@@ -288,9 +298,44 @@
             oggy.position.set(0,-30,0);
             scene.add(oggy);
         });
+        //gltfloader2 = new THREE.GLTFLoader();
+        //gltfloader2.load('model/gltf/truck/scene.gltf', function (gltf) {
+            //truck = gltf.scene
+           // truck.children[0].children[0].children[0].children[3].visible = false;
+           // truck.scale.set(10,10,10);
+         //   truck.position.set(5,5,5);
+          //  scene.add(truck);
+      //  });
+//forTWEEN1
+        objectLoader2 = new THREE.ObjectLoader();
+        objectLoader2.load("model/ping/ping.json", function (obj) {
+            obj.position.z = 30;
+            obj.position.y = -50;
+            obj.position.x =-50;
+            obj.scale.set(10,10,10);
+            ant=obj;
+            scene.add(ant);
+        });
+        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
+///forTWEEN2
+        objectLoader4 = new THREE.ObjectLoader();
+        objectLoader4.load("model/LAK/lak.json", function (obj) {
+            obj.position.z = 30;
+            obj.position.y = -50;
+            obj.position.x =-90;
+            obj.scale.set(30,30,30);
+            lak=obj;
+            scene.add(lak);
+        });
+        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
+        //tween
+     //  var t = {x: -50, y: -50, z: 30};
+        //tween = new TWEEN.Tween(ant.position).to(t, 80);
+      // tween.delay(300);
+     //   tween.easing(TWEEN.Easing.Exponential.InOut);
+
 
     }
-
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -303,7 +348,7 @@
     }
 
 
-    function  rotat() {
+    function  rotate() {
         var t = (Date.now() / 700);
         for (var j = 0; j < 300; j++) {
 
@@ -314,10 +359,30 @@
         controls.update();
 
     }
+
+    //////////////////////////////////////////// collision
+    function checkdonut() {
+        for(i=0; i <= CubeArray.length-1; i++) {
+            var donutObj = trees.children[i];
+            var oggyObj = Cubeoggy;
+            var firstBB = new THREE.Box3().setFromObject(donutObj);
+            var secondBB = new THREE.Box3().setFromObject(oggyObj);
+            var collision = firstBB.intersectsBox(secondBB);
+            if(collision) {
+                trees.remove(trees.children[i]);
+                console.log('COLLISION');
+            }
+        }
+    }
+    var loopdonut = new THREEx.PhysicsLoop(30);
+    loopdonut.add(checkdonut);
+    loopdonut.start();
+
+
     function animate() {
+        TWEEN.update();
 
-        rotat();
-
+        rotate();
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
         var rotateAngle = Math.PI / 2 * delta;
@@ -352,6 +417,7 @@
         renderer.render(scene, camera);
 
     }
+
 
 </script>
 </body>
