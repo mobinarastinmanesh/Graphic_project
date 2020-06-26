@@ -63,13 +63,13 @@
     var geometry, material, mesh;
     var controls;
     var Cube;
-    var car;
+    var oggy;
     var raycaster;
     var CubeArray = [];
-    var carrot;
     var trees;
     var objectLoader2;
     var objectLoader3;
+    var gltfloader1;
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
     var tree;
@@ -78,6 +78,7 @@
     var donut=[300];
     var tween;
     var target = [300];
+    var car;
     init();
     animate();
     function init() {
@@ -96,18 +97,7 @@
         scene.background = reflectionCube;
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 
-//model/car4/porsche-cayman.json
-       // objectLoader2 = new THREE.ObjectLoader();
-     //   objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
-           // obj.position.z = 0;
-           // obj.position.y = -50;
-         //   obj.position.x =0;
-          //  obj.scale.set(8, 8,8);
-          //  car=obj;
-            //scene.add(car);
-       // });
-
- ///////////////////////////////////////////////////////////////////music
+        ///////////////////////////////////////////////////////////////////music
         var listener = new THREE.AudioListener();
         camera.add(listener);
         audioLoader = new THREE.AudioLoader();
@@ -144,7 +134,7 @@
             }
             scene.add(tree);
         });
- ///////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
         var pinkdonut='texture/yami.jfif';
         var browndonut='texture/brown.jpg';
         var colorfulldonut='texture/colorfull.jpg';
@@ -334,28 +324,28 @@
 
 
         if (keyboard.pressed(String.fromCharCode(38)))
-            car.translateZ(-moveDistance);
+            oggy.translateZ(-moveDistance);
         if (keyboard.pressed(String.fromCharCode(40)))
-            car.translateZ(moveDistance);
+            oggy.translateZ(moveDistance);
 
         if (keyboard.pressed(String.fromCharCode(37)))
-            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+            oggy.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
         if (keyboard.pressed(String.fromCharCode(39)))
-            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+            oggy.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
 
 
         if (keyboard.pressed("Z")) {
-            car.position.set(0, 1, 0);
-            car.rotation.set(0, 0, 0);
+            oggy.position.set(0, 1, 0);
+            oggy.rotation.set(0, 0, 0);
         }
 
-        if (car) {
+        if (oggy) {
             var relativeCameraOffset = new THREE.Vector3(0,3,12);
-            var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
+            var cameraOffset = relativeCameraOffset.applyMatrix4(oggy.matrixWorld);
             camera.position.x = cameraOffset.x;
             camera.position.y = cameraOffset.y;
             camera.position.z = cameraOffset.z;
-            camera.lookAt(car.position);
+            camera.lookAt(oggy.position);
         }
 
         requestAnimationFrame(animate);
