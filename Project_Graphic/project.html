@@ -37,42 +37,42 @@
 <body>
 <div style="background-color: #f5c6cb ; margin: 0">
 
-        <h3 class="d-inline">Number of donuts eaten  <span class="badge badge-warning badge-pill " id="message">0</span></h3>
-        <h3 class="d-inline ">Time  <span class="badge badge-danger badge-pill " id="time">0</span></h3>
-        <div class="float-right rounded" style="width: 100px ; height: 50px ; font-size: larger ;background-color: palevioletred" >
+    <h3 class="d-inline">Number of donuts eaten  <span class="badge badge-warning badge-pill " id="message">0</span></h3>
+    <h3 class="d-inline ">Time  <span class="badge badge-danger badge-pill " id="time">0</span></h3>
+    <div class="float-right rounded" style="width: 100px ; height: 50px ; font-size: larger ;background-color: palevioletred" >
 
-            <i class="fas fa-heart"></i>
-            <span id="live" style="font-size: larger">100</span>
-            <span style="font-size: larger">%</span>
-        </div>
+        <i class="fas fa-heart"></i>
+        <span id="live" style="font-size: larger">100</span>
+        <span style="font-size: larger">%</span>
+    </div>
 
 
 </div>
 
 <div id="myModal" class="modal">
 
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content px-5" style="height:400px; ">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content px-5" style="height:400px; ">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header text-danger">
-                        <h4 class="modal-title"> time is over </h4>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body ">
-
-                        <span id="eaten" class="text-success"></span>
-                        <i class="fas fa-thumbs-up"></i>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <a href="project.html" class="btn btn-success">again</a>
-
-
-                </div>
+            <!-- Modal Header -->
+            <div class="modal-header text-danger">
+                <h4 class="modal-title"> time is over </h4>
             </div>
+
+            <!-- Modal body -->
+            <div class="modal-body ">
+
+                <span id="eaten" class="text-success"></span>
+                <i class="fas fa-thumbs-up"></i>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="project.html" class="btn btn-success">again</a>
+
+
+            </div>
+        </div>
 
     </div>
 </div>
@@ -106,12 +106,12 @@
         animate();
         function init() {
 
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
             camera.position.x=10;
             camera.position.y =-10;
             camera.position.z =-10;
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             var reflectionCube = new THREE.CubeTextureLoader()
                 .setPath('texture/cube/skybox/')
                 .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']);
@@ -120,34 +120,34 @@
             scene.background = reflectionCube;
             scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 
-/********************************************************************************************************************/
-           // objectLoader2 = new THREE.ObjectLoader();
-           // objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
-           //      var cubeGeometry = new THREE.CubeGeometry(2,5,2);
-           //      var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
-           //      cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
-           //      obj.position.z = 0;
-           //      obj.position.y = -50;
-           //      obj.position.x =10;
-           //      obj.scale.set(8, 8,8);
-           //      car=obj;
-           //      car.add(cubecar)
-           //      scene.add(car);
-           // });
+            /********************************************************************************************************************/
+            // objectLoader2 = new THREE.ObjectLoader();
+            // objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
+            //      var cubeGeometry = new THREE.CubeGeometry(2,5,2);
+            //      var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
+            //      cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
+            //      obj.position.z = 0;
+            //      obj.position.y = -50;
+            //      obj.position.x =10;
+            //      obj.scale.set(8, 8,8);
+            //      car=obj;
+            //      car.add(cubecar)
+            //      scene.add(car);
+            // });
             objectLoader2 = new THREE.ObjectLoader();
             objectLoader2.load("model/LAK/lak.json", function (obj) {
-                 var cubeGeometry = new THREE.CubeGeometry(0.5,0.5,1);
-                 var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
-                 cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
-                 obj.position.z = 0;
-                 obj.position.y = -50;
-                 obj.position.x =10;
-                 obj.scale.set(30,30,30);
-                 car=obj;
-                 car.add(cubecar)
-                 scene.add(car);
+                var cubeGeometry = new THREE.CubeGeometry(0.5,0.5,1);
+                var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
+                cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
+                obj.position.z = 0;
+                obj.position.y = -50;
+                obj.position.x =10;
+                obj.scale.set(30,30,30);
+                car=obj;
+                car.add(cubecar)
+                scene.add(car);
             });
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             // var listener = new THREE.AudioListener();
             // camera.add(listener);
             // audioLoader = new THREE.AudioLoader();
@@ -160,7 +160,7 @@
             //     sound.loop = true;
             // });
             // scene.add(sound);
- /********************************************************************************************************************/
+            /********************************************************************************************************************/
             var listener = new THREE.AudioListener();
             camera.add(listener);
             audioLoader = new THREE.AudioLoader();
@@ -173,8 +173,8 @@
             });
 
             scene.add(music);
-/********************************************************************************************************************/
-           var  objectLoader = new THREE.ObjectLoader();
+            /********************************************************************************************************************/
+            var  objectLoader = new THREE.ObjectLoader();
 
             objectLoader.load("model/tree/tree-un.json", function (obj) {
                 var cubeGeometry = new THREE.CubeGeometry(7,50,10);
@@ -194,10 +194,10 @@
 
                     trees.add(obj2);
                 }
-           });
+            });
 
             scene.add(trees);
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             // objectLoader2 = new THREE.ObjectLoader();
             // objectLoader2.load("model/ping/ping.json", function (obj) {
             //     obj.position.z = 30;
@@ -208,7 +208,7 @@
             //     scene.add(ant);
             // });
             // scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
 
             // var   objectLoader4 = new THREE.ObjectLoader();
             // objectLoader4.load("model/LAK/lak.json", function (obj) {
@@ -220,7 +220,7 @@
             //     scene.add(lak);
             // });
 
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             var pinkdonut='texture/yami.jfif';
             var browndonut='texture/brown.jpg';
             var colorfulldonut='texture/colorfull.jpg';
@@ -312,19 +312,19 @@
             }
 
             scene.add(donut);
-    //////////////////////////////////////////////////////////////////////////
-    //         objectLoader3 = new THREE.ObjectLoader();
-    //         objectLoader3.load("model/icecream/ice-cream-shop.json", function (obj) {
-    //             obj.position.z = 0;
-    //             obj.position.y = -50;
-    //             obj.position.x =90;
-    //             obj.scale.set(10, 10,10);
-    //             ice=obj;
-    //             scene.add(ice);
-    //         });
-/********************************************************************************************************************/
+            //////////////////////////////////////////////////////////////////////////
+            //         objectLoader3 = new THREE.ObjectLoader();
+            //         objectLoader3.load("model/icecream/ice-cream-shop.json", function (obj) {
+            //             obj.position.z = 0;
+            //             obj.position.y = -50;
+            //             obj.position.x =90;
+            //             obj.scale.set(10, 10,10);
+            //             ice=obj;
+            //             scene.add(ice);
+            //         });
+            /********************************************************************************************************************/
             scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             var light = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
             light.position.set(0.5, 1, 0.75);
             scene.add(light);
@@ -345,14 +345,14 @@
             surfaceMesh.position.y = -50;
             scene.add(surfaceMesh);
             window.addEventListener('resize', onWindowResize, false);
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             renderer = new THREE.WebGLRenderer();
             renderer.setClearColor(0xffffff);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
             window.addEventListener('resize', onWindowResize, false);
-/********************************************************************************************************************/
+            /********************************************************************************************************************/
             // CONTROLS
             controls = new THREE.OrbitControls( camera, renderer.domElement );
             // controls.addEventListener('change', renderer);
@@ -431,7 +431,7 @@
         looptree.add(checktree);
         looptree.start();
 
-/************************************************************************************************/
+        /************************************************************************************************/
         function checkdonut() {
             for(var i=0; i < 300; i++) {
                 var donutObj = donut.children[i];
@@ -451,7 +451,7 @@
         loopdonut.add(checkdonut);
         loopdonut.start();
 
-/////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////
 
         var seconds = 0;
         var el = document.getElementById('time');
