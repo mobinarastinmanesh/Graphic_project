@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TAMARIN</title>
+    <style>
+
+        body {
+        @include display(flex);
+        @include align-content(center);
+            color: #353535;
+            min-height: 100vh;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 4px;
+            text-align: center;
+            background-color: lightgreen;
+            margin: 0 auto;
+            overflow: hidden;
+
+        }
+
+        .container {
+            background-color: white;
+            box-shadow: 0 0 4px 1px #BBB;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #web-gl {
+            height: 100%;
+            width: 100%;
+        }
+
+    </style>
+    <script type="text/javascript" src="lib/three.js"></script>
+    <script type="text/javascript" src="lib/ShadowMapViewer.js"></script>
+    <script type="text/javascript" src="lib/dat.gui.min.js"></script>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script type='text/javascript' src='lib/OrbitControls.js'></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
+
+</head>
+<body>
+
+
+<div class="container">
+
+
+    <div id="web-gl">
+
+    </div>
+</div>
+
+
+<script id="scriptScene0" type="text/javascript">
+
+    var camera, renderer;
+    var scene, sphere, torusKnot;
+    var spotLight, ambientLight, dirLight, pointLight;
+    var texture, texture1, texture2, texture3;
+    var controls;
+    var torus1,torus2;
+    var donut;
+    var step = 1;
+    var keyboard = new THREEx.KeyboardState();
+    var clock = new THREE.Clock();
+
+    init();
+    animate();
+    createPanel();
+
+    function init() {
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setClearColor(new THREE.Color(0x000000));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls( camera, renderer.domElement );
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        camera.position.x = 30;
+        camera.position.y = 90;
+        camera.position.z = 300;
+        camera.lookAt(scene.position);
+        document.getElementById("web-gl").appendChild(renderer.domElement);
+
+        ambientLight = new THREE.AmbientLight(0xffffff);
+        scene.add(ambientLight);
+
+        spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.angle = Math.PI / 2.5;
+        spotLight.penumbra = 0.3;
+        spotLight.position.set(20, 60, 5);
+        spotLight.castShadow = true;
+        spotLight.shadow.camera.near = 8;
+        spotLight.shadow.camera.far = 30;
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+        scene.add(spotLight);
+        spotLight.visible = false;
+
+        dirLight = new THREE.DirectionalLight(0xffffff);
+        dirLight.position.set(95, 5, 55);
+        dirLight.castShadow = true;
+        dirLight.shadow.camera.near = 0.1;
+        dirLight.shadow.camera.far = 500;
+        dirLight.shadow.camera.right = 550;
+        dirLight.shadow.camera.left = -550;
+        dirLight.shadow.camera.top = 550;
+        dirLight.shadow.camera.bottom = -550;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+
+        scene.add(dirLight);
+        dirLight.visible = false;
+
+        pointLight = new THREE.PointLight(0xffffff, 1, 800, 4);
+        pointLight.position.set(20, 50, 50);
+        pointLight.castShadow = true;
+        pointLight.shadow.camera.near = 1;
+        pointLight.shadow.camera.far = 200;
+        scene.add(pointLight);
+        pointLight.visible = false;
+
+        texture = THREE.ImageUtils.loadTexture('texture/tex11.jpg');
+        texture.repeat.set(10, 10);
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.magFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.NearestFilter;
+
+        var surface = new THREE.PlaneGeometry(300, 350);
+        var surfaceMaterial = new THREE.MeshPhongMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
+        var surfaceMesh = new THREE.Mesh(surface, surfaceMaterial);
+        surfaceMesh.rotateX(Math.PI / 2);
+        surfaceMesh.position.y = -50;
+        surfaceMesh.receiveShadow = true;
+        scene.add(surfaceMesh);
+
+        var surface1 = new THREE.PlaneGeometry(300, 350);
+        var surfaceMaterial1 = new THREE.MeshPhongMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
+        var surfaceMesh1 = new THREE.Mesh(surface1, surfaceMaterial1);
+        surfaceMesh1.position.z = -100;
+        surfaceMesh1.receiveShadow = true;
+        scene.add(surfaceMesh1);
+
+        var surface2 = new THREE.PlaneGeometry(300, 350);
+        var surfaceMaterial2 = new THREE.MeshPhongMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
+        var surfaceMesh2 = new THREE.Mesh(surface2, surfaceMaterial2);
+        surfaceMesh2.rotateY(Math.PI / 2);
+        surfaceMesh2.position.x = -170;
+        surfaceMesh2.receiveShadow = true;
+        scene.add(surfaceMesh2);
+
+        var surface3 = new THREE.PlaneGeometry(300, 350);
+        var surfaceMaterial3 = new THREE.MeshPhongMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
+        var surfaceMesh3 = new THREE.Mesh(surface3, surfaceMaterial3);
+        surfaceMesh3.rotateY(Math.PI / 2);
+        surfaceMesh3.position.x =165;
+        surfaceMesh3.receiveShadow = true;
+        scene.add(surfaceMesh3);
+
+/////////////////////////////
+        var donut1 = 'texture/makhmal.jpg';
+        var donut2 = 'texture/porz.jpg';
+        donut = new THREE.Object3D();
+
+        var textureTorus1 = new THREE.TextureLoader().load(donut1);
+        var textureTorus2 = new THREE.TextureLoader().load(donut2);
+        var Torusgeometry = new THREE.TorusGeometry(6, 3, 15, 20);
+
+        var TorusboxMaterial1 = new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus1});
+        torus1 = new THREE.Mesh(Torusgeometry, TorusboxMaterial1);
+        var TorusboxMaterial2 = new THREE.MeshPhongMaterial({shininess: 100, map: textureTorus2});
+        torus2 = new THREE.Mesh(Torusgeometry, TorusboxMaterial2);
+        torus1.scale.set(4, 4, 4);
+        torus2.scale.set(3, 3, 3);
+
+        torus1.position.set(-20, 50, 10);
+        torus2.position.set(80, 10, 5);
+        torus1.castShadow = true;
+        torus1.receiveShadow = true;
+        torus2.castShadow = true;
+        torus2.receiveShadow = true;
+        scene.add(torus1);
+        scene.add(torus2);
+
+    }
+
+
+    function animate() {
+        renderer.render(scene, camera);
+        var t = (Date.now() / 1000);
+        var frameTime = clock.getDelta();
+
+        if (keyboard.pressed(String.fromCharCode(39))) {
+            torus2.scale.x += 0.06;
+            torus2.scale.y += 0.06;
+            torus2.scale.z += 0.06;
+
+        }
+        if (keyboard.pressed(String.fromCharCode(37))) {
+            torus2.scale.x -= 0.06;
+            torus2.scale.y -= 0.06;
+            torus2.scale.z -= 0.06;
+
+        }
+        torus1.rotation.x += 1.0 * frameTime;
+        torus2.rotation.y += 1.0 * frameTime;
+        requestAnimationFrame(animate);
+    }
+
+    function btn1() {
+        toggleVisible(ambientLight);
+    }
+
+    function btn2() {
+        toggleVisible(dirLight);
+    }
+
+    function btn3() {
+        toggleVisible(spotLight);
+    }
+
+    function btn4() {
+        toggleVisible(pointLight);
+    }
+
+    function toggleVisible(p) {
+        p.visible = !p.visible;
+    }
+
+    function createPanel() {
+        var gui = new dat.GUI({width: 300});
+        var folder = gui.addFolder('Lights');
+
+        props = {
+            'Ambient Light': true,
+            'Directional Light': false,
+            'Spot Light': false,
+            'Point Light': false
+        };
+        folder.add(props, 'Ambient Light').onChange(btn1);
+        folder.add(props, 'Directional Light').onChange(btn2);
+        folder.add(props, 'Spot Light').onChange(btn3);
+        folder.add(props, 'Point Light').onChange(btn4);
+
+        folder.open();
+
+    }
+
+
+
+</script>
+
+
+</body>
+</html>
