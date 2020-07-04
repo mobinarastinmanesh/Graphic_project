@@ -87,25 +87,22 @@
     var  ambientLight, directionalLight,hemisphereLight;
     var controls;
     var Cube;
-    var car;
-    var raycaster;
+    var lak;
     var  trees = new THREE.Object3D();
     var bird1 , bird2 , bird3;
     var obj , obj2;
     var objectLoader2;
-    var objectLoader3;
     var keyboard = new THREEx.KeyboardState();
     var clock = new THREE.Clock();
     var tree;
-    var sound;
-    var music,music2,music3;
+    var music,music2;
     var audioLoader;
     var tedad =0;
     var donut;
     var tween1,tween2 ,tween3;
     var target1 ,target2 , target3 ;
-    var cubecar;
     var cubetree;
+    var cubelak;
     var ice ;
     var target ;
     init();
@@ -114,47 +111,26 @@
 
     function init() {
 
-        /********************************************************************************************************************/
         scene = new THREE.Scene();
 
-       /* camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
-        camera.position.x=10;
-        camera.position.y =-10;
-        camera.position.z =-10;
-*/
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
         renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setClearColor(new THREE.Color(0x000000));
         renderer.setSize(window.innerWidth, window.innerHeight);
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.addEventListener('change', renderer);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.07;
-        controls.enableZoom = true;
 
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         camera.position.x=10;
         camera.position.y =-10;
         camera.position.z =-10;
         camera.lookAt(scene.position);
-        // document.getElementById("web-gl").appendChild(renderer.domElement);
-        // window.addEventListener('keyup', onDocumentKeyUp, false);
-        //////////////////
-        directionalLight = new THREE.DirectionalLight(0xffffff);
-        directionalLight.position.set(95, 5, 55);
-        directionalLight.castShadow = true;
-        directionalLight.shadow.camera.near = 0.1;
-        directionalLight.shadow.camera.far = 500;
-        directionalLight.shadow.camera.right = 550;
-        directionalLight.shadow.camera.left = -550;
-        directionalLight.shadow.camera.top = 550;
-        directionalLight.shadow.camera.bottom = -550;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
-        scene.add(directionalLight);
-        directionalLight.visible = false;
+
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        window.addEventListener('keyup', onDocumentKeyUp, false);
+        window.addEventListener('resize', onWindowResize, false);
+
         /********************************************************************************************************************/
         var reflectionCube = new THREE.CubeTextureLoader()
             .setPath('texture/cube/skybox/')
@@ -165,45 +141,20 @@
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 
         /********************************************************************************************************************/
-        // objectLoader2 = new THREE.ObjectLoader();
-        // objectLoader2.load("model/rabbit/rabbit.json", function (obj) {
-        //      var cubeGeometry = new THREE.CubeGeometry(2,5,2);
-        //      var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
-        //      cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
-        //      obj.position.z = 0;
-        //      obj.position.y = -50;
-        //      obj.position.x =10;
-        //      obj.scale.set(8, 8,8);
-        //      car=obj;
-        //      car.add(cubecar)
-        //      scene.add(car);
-        // });
         objectLoader2 = new THREE.ObjectLoader();
         objectLoader2.load("model/LAK/lak.json", function (obj) {
             var cubeGeometry = new THREE.CubeGeometry(0.5,0.5,1);
             var wireMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true, visible: false});
-            cubecar = new THREE.Mesh(cubeGeometry, wireMaterial);
+            cubelak = new THREE.Mesh(cubeGeometry, wireMaterial);
             obj.position.z = 0;
             obj.position.y = -50;
             obj.position.x =10;
             obj.scale.set(30,30,30);
-            car=obj;
-            car.add(cubecar)
-            scene.add(car);
+            lak=obj;
+            lak.add(cubelak)
+            scene.add(lak);
         });
-        /********************************************************************************************************************/
-        // var listener = new THREE.AudioListener();
-        // camera.add(listener);
-        // audioLoader = new THREE.AudioLoader();
-        //
-        // sound = new THREE.PositionalAudio(listener);
-        // audioLoader.load('Halcyon - @Mentonix.mp3', function (buffer) {
-        //     sound.setBuffer(buffer);
-        //     sound.setRefDistance(50);
-        //     sound.play();
-        //     sound.loop = true;
-        // });
-        // scene.add(sound);
+
         /********************************************************************************************************************/
         var listener = new THREE.AudioListener();
         camera.add(listener);
@@ -234,7 +185,6 @@
                 obj2.position.y = -65;
                 obj2.position.z = Math.random() *2000  - 1000;
                 obj2.rotateY(-Math.random() * 150 - 27);
-
 
                 trees.add(obj2);
             }
@@ -290,18 +240,6 @@
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
 
         /********************************************************************************************************************/
-
-        // var   objectLoader4 = new THREE.ObjectLoader();
-        // objectLoader4.load("model/LAK/lak.json", function (obj) {
-        //     obj.position.z = 30;
-        //     obj.position.y = -50;
-        //     obj.position.x =-90;
-        //     obj.scale.set(30,30,30);
-        //     var lak=obj;
-        //     scene.add(lak);
-        // });
-
-        /********************************************************************************************************************/
         var pinkdonut='texture/yami.jfif';
         var browndonut='texture/brown.jpg';
         var colorfulldonut='texture/colorfull.jpg';
@@ -338,11 +276,6 @@
         torus4.scale.set(0.7,0.7,0.7);
         torus5.scale.set(0.7,0.7,0.7);
         torus6.scale.set(0.7,0.7,0.7);
-        /*
-                tween = new TWEEN.Tween(planeFight.position).to(target, 5000);
-                   tween.delay(200);
-                   tween.easing(TWEEN.Easing.Quartic.InOut);
-        */
 
         for (var j = 0; j < 50; j++) {
             var r=torus1.clone();
@@ -406,10 +339,7 @@
         /********************************************************************************************************************/
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
         /********************************************************************************************************************/
-        /*var light = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
-        light.position.set(0.5, 1, 0.75);
-        scene.add(light);
-        */
+
         ambientLight = new THREE.AmbientLight(0xdbdb87, 0.5);
         scene.add(ambientLight);
 
@@ -421,7 +351,6 @@
         scene.add(hemisphereLight);
         hemisphereLight.visible = false;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
         var texture = new THREE.TextureLoader().load('texture/grass_6.jpg');
         texture.repeat.set(100, 100);
@@ -436,36 +365,10 @@
         surfaceMesh.rotateX(Math.PI / 2);
         surfaceMesh.position.y = -50;
         scene.add(surfaceMesh);
-        // window.addEventListener('resize', onWindowResize, false);
-        /********************************************************************************************************************/
-        renderer = new THREE.WebGLRenderer();
-        renderer.setClearColor(0xffffff);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
 
-        window.addEventListener('keyup', onDocumentKeyUp, false);
-
-        window.addEventListener('resize', onWindowResize, false);
         /********************************************************************************************************************/
-        // CONTROLS
+
         controls = new THREE.OrbitControls( camera, renderer.domElement );
-        // controls.addEventListener('change', renderer);
-        // controls.enableDamping= false;
-        // controls.dampingFactor= 0.07;
-        // controls.enableZoom= false;
-
-        // controls = new THREE.TrackballControls(camera);
-        // controls.rotateSpeed= 1.0; controls.zoomSpeed= 1.2;
-        // controls.panSpeed=0.8; controls.noZoom= false;
-        // controls.noPan= false; controls.staticMoving = true;
-        // controls.dynamicDampingFactor= 0.3;
-
-        // controls = new THREE.FirstPersonControls(camera, renderer.domElement);
-        // controls.movementSpeed=100;
-        // controls.lookSpeed = 0.05;
-        // controls.noFly=true;
-        // controls.lookVertical = false
 
     }
 
@@ -506,11 +409,24 @@
     function checktree() {
         for(var i=0; i < 150; i++) {
             var treeObj = trees.children[i];
-            var carObj1 = cubecar;
+            var lakObj1 = cubelak;
             var firstBB1 = new THREE.Box3().setFromObject(treeObj);
-            var secondBB1 = new THREE.Box3().setFromObject(carObj1);
+            var secondBB1 = new THREE.Box3().setFromObject(lakObj1);
             var collision1 = firstBB1.intersectsBox(secondBB1);
             if(collision1) {
+
+                var listener = new THREE.AudioListener();
+                camera.add(listener);
+                audioLoader = new THREE.AudioLoader();
+                music2 = new THREE.PositionalAudio(listener);
+                audioLoader.load('music/1.mp3', function (buffer) {
+                    music2.setBuffer(buffer);
+                    music2.setRefDistance(15);
+                    music2.play();
+                });
+                trees.add(music2);
+
+
                 joon=joon-25;
                 trees.remove(trees.children[i]);
                 console.log('COLLISION tree');
@@ -525,42 +441,15 @@
     var looptree = new THREEx.PhysicsLoop(30);
     looptree.add(checktree);
     looptree.start();
-    ////////////////////////sound for collision of trees
-    function checktree2() {
-        for(var i=0; i < 150; i++) {
-            var treeObj = trees.children[i];
-            var carObj1 = cubecar;
-            var firstBB1 = new THREE.Box3().setFromObject(treeObj);
-            var secondBB1 = new THREE.Box3().setFromObject(carObj1);
-            var collision1 = firstBB1.intersectsBox(secondBB1);
-            if(collision1) {
-                var listener = new THREE.AudioListener();
-                camera.add(listener);
-                audioLoader = new THREE.AudioLoader();
-                music2 = new THREE.PositionalAudio(listener);
-                audioLoader.load('music/1.mp3', function (buffer) {
-                    music2.setBuffer(buffer);
-                    music2.setRefDistance(15);
-                    music2.play();
-                });
-                trees.add(music2);
-            }
-
-        }
-    }
-
-    var looptree2 = new THREEx.PhysicsLoop(30);
-    looptree2.add(checktree2);
-    looptree2.start();
 
 
     /************************************************************************************************/
     function checkdonut() {
         for(var i=0; i < 300; i++) {
             var donutObj = donut.children[i];
-            var carObj1 = cubecar;
+            var lakObj1 = cubelak;
             var firstBB1 = new THREE.Box3().setFromObject(donutObj);
-            var secondBB1 = new THREE.Box3().setFromObject(carObj1);
+            var secondBB1 = new THREE.Box3().setFromObject(lakObj1);
             var collision1 = firstBB1.intersectsBox(secondBB1);
             if(collision1) {
                 donut.remove(donut.children[i]);
@@ -576,7 +465,7 @@
 
     /////////////////////////////////////////////////////////
 
-    var seconds = 25;
+    var seconds = 60;
     var el = document.getElementById('time');
 
 
@@ -596,69 +485,37 @@
     }
     var cancel = setInterval(incrementSeconds, 1000);
 
-    // function tweenPlane() {
-    //     target = {x: Math.random() * 1000 - 500 , y: -35, z: Math.random() * 1000 - 500};
-    //     // target.x =Math.random() * 1000 - 500;
-    //     // target.z =Math.random() * 1000 - 500;
-    // }
-    // function onDocumentKeyUp(event) {
-    //         tween.start();
-    //
-    // }
-    // TWEEN.update();
+
     function animate() {
 
         rotat();
-        // tween.start();
+     
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
         var rotateAngle = Math.PI / 2 * delta;
 
-        //
-        // if (keyboard.pressed("A"))
-        //     car.rotation.y += rotateAngle;
-        // if (keyboard.pressed("D"))
-        //     car.rotation.y -= rotateAngle;
-        //
-        // if (keyboard.pressed("left"))
-        //     car.position.x -= moveDistance;
-        // if (keyboard.pressed("right"))
-        //     car.position.x += moveDistance;
-        // if (keyboard.pressed("up"))
-        //     car.position.z -= moveDistance;
-        // if (keyboard.pressed("down"))
-        //     car.position.z += moveDistance;
-        // if (keyboard.pressed("A"))
-        //     car.rotation.y += rotateAngle;
-        // if (keyboard.pressed("D"))
-        //     car.rotation.y -= rotateAngle;
         if (keyboard.pressed(String.fromCharCode(38))) {
-            car.translateZ(-moveDistance);
+            lak.translateZ(-moveDistance);
         }
         if (keyboard.pressed(String.fromCharCode(40))) {
-            car.translateZ(moveDistance);
+            lak.translateZ(moveDistance);
 
         }
         if (keyboard.pressed(String.fromCharCode(37))) {
-            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
+            lak.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateAngle);
         }
         if (keyboard.pressed(String.fromCharCode(39))) {
-            car.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
+            lak.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateAngle);
 
         }
 
-        //
-        // if (keyboard.pressed("Z")) {
-        //     car.position.set(0, 1, 0);
-        //     car.rotation.set(0, 0, 0);
-        // }
-        if (car) {
+        if (lak) {
             var relativeCameraOffset = new THREE.Vector3(0,2,5);
-            var cameraOffset = relativeCameraOffset.applyMatrix4(car.matrixWorld);
+            var cameraOffset = relativeCameraOffset.applyMatrix4(lak.matrixWorld);
             camera.position.x = cameraOffset.x;
             camera.position.y = cameraOffset.y;
             camera.position.z = cameraOffset.z;
-            camera.lookAt(car.position);
+            camera.lookAt(lak.position);
 
         }
         renderer.render(scene, camera);
