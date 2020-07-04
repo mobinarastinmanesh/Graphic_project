@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>hungry-car</title>
+    <title>laki in jungle</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="progressBar.css">
@@ -15,6 +15,8 @@
     <script type="text/javascript" src="lib/GLTFLoader.js"></script>
     <script type="text/javascript" src="lib/threex.loop.js"></script>
     <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/ShadowMapViewer.js"></script>
+    <script type="text/javascript" src="lib/dat.gui.min.js"></script>
     <link rel="stylesheet" href="lib/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
@@ -76,10 +78,13 @@
 
     </div>
 </div>
-
-<script>
+<div class="container">
+    <div id="web-gl"></div>
+</div>
+<script id="scriptScene0" type="text/javascript">
     var camera, scene, renderer;
     var geometry, material, mesh;
+    var  ambientLight, directionalLight,hemisphereLight;
     var controls;
     var Cube;
     var car;
@@ -93,7 +98,7 @@
     var clock = new THREE.Clock();
     var tree;
     var sound;
-    var music;
+    var music,music2,music3;
     var audioLoader;
     var tedad =0;
     var donut;
@@ -105,17 +110,51 @@
     var target ;
     init();
     animate();
+    createPanel();
+
     function init() {
 
         /********************************************************************************************************************/
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        scene = new THREE.Scene();
+
+       /* camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
         camera.position.x=10;
         camera.position.y =-10;
         camera.position.z =-10;
+*/
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setClearColor(new THREE.Color(0x000000));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.addEventListener('change', renderer);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.07;
+        controls.enableZoom = true;
 
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+        camera.position.x=10;
+        camera.position.y =-10;
+        camera.position.z =-10;
+        camera.lookAt(scene.position);
         // document.getElementById("web-gl").appendChild(renderer.domElement);
         // window.addEventListener('keyup', onDocumentKeyUp, false);
+        //////////////////
+        directionalLight = new THREE.DirectionalLight(0xffffff);
+        directionalLight.position.set(95, 5, 55);
+        directionalLight.castShadow = true;
+        directionalLight.shadow.camera.near = 0.1;
+        directionalLight.shadow.camera.far = 500;
+        directionalLight.shadow.camera.right = 550;
+        directionalLight.shadow.camera.left = -550;
+        directionalLight.shadow.camera.top = 550;
+        directionalLight.shadow.camera.bottom = -550;
+        directionalLight.shadow.mapSize.width = 2048;
+        directionalLight.shadow.mapSize.height = 2048;
+        scene.add(directionalLight);
+        directionalLight.visible = false;
         /********************************************************************************************************************/
         var reflectionCube = new THREE.CubeTextureLoader()
             .setPath('texture/cube/skybox/')
@@ -212,19 +251,19 @@
             bird3=obj.clone();
 
             bird1.position.z = Math.random() * 1000 - 500;
-            bird1.position.y = -35;
+            bird1.position.y = -8;
             bird1.position.x =Math.random() * 1000 - 500;
             bird1.rotateY(-Math.random() * 150 - 27);
             scene.add(bird1);
             //
             bird2.position.z =Math.random() * 1000 - 500;
-            bird2.position.y = -35;
+            bird2.position.y = -8;
             bird2.position.x =Math.random() * 1000 - 500;
             bird2.rotateY(-Math.random() * 150 - 27);
             scene.add(bird2);
 
             bird3.position.z = Math.random() * 1000 - 500;
-            bird3.position.y = -35;
+            bird3.position.y = -8;
             bird3.position.x =Math.random() * 1000 - 500;
             bird3.rotateY(-Math.random() * 150 - 27);
             scene.add(bird3);
@@ -367,9 +406,20 @@
         /********************************************************************************************************************/
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
         /********************************************************************************************************************/
-        var light = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
+        /*var light = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
         light.position.set(0.5, 1, 0.75);
         scene.add(light);
+        */
+        ambientLight = new THREE.AmbientLight(0xdbdb87, 0.5);
+        scene.add(ambientLight);
+
+        directionalLight = new THREE.DirectionalLight(0xaaaaaa, 1);
+        scene.add(directionalLight);
+        directionalLight.visible = false;
+
+        hemisphereLight = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
+        scene.add(hemisphereLight);
+        hemisphereLight.visible = false;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
@@ -475,6 +525,34 @@
     var looptree = new THREEx.PhysicsLoop(30);
     looptree.add(checktree);
     looptree.start();
+    ////////////////////////sound for collision of trees
+    function checktree2() {
+        for(var i=0; i < 150; i++) {
+            var treeObj = trees.children[i];
+            var carObj1 = cubecar;
+            var firstBB1 = new THREE.Box3().setFromObject(treeObj);
+            var secondBB1 = new THREE.Box3().setFromObject(carObj1);
+            var collision1 = firstBB1.intersectsBox(secondBB1);
+            if(collision1) {
+                var listener = new THREE.AudioListener();
+                camera.add(listener);
+                audioLoader = new THREE.AudioLoader();
+                music2 = new THREE.PositionalAudio(listener);
+                audioLoader.load('music/1.mp3', function (buffer) {
+                    music2.setBuffer(buffer);
+                    music2.setRefDistance(15);
+                    music2.play();
+                });
+                trees.add(music2);
+            }
+
+        }
+    }
+
+    var looptree2 = new THREEx.PhysicsLoop(30);
+    looptree2.add(checktree2);
+    looptree2.start();
+
 
     /************************************************************************************************/
     function checkdonut() {
@@ -498,16 +576,16 @@
 
     /////////////////////////////////////////////////////////
 
-    var seconds = 0;
+    var seconds = 25;
     var el = document.getElementById('time');
 
 
     function incrementSeconds() {
-        if(seconds<60) {
-            seconds += 1;
+        if(seconds) {
+            seconds -= 1;
             el.innerText = seconds;
         }
-        if(seconds==60){
+        if(seconds==0){
             el.innerText="finish";
             var modal = document.getElementById("myModal");
             document.getElementById('eaten').innerHTML = tedad;
@@ -530,19 +608,11 @@
     // TWEEN.update();
     function animate() {
 
-
-
         rotat();
-
         // tween.start();
         var delta = clock.getDelta();
         var moveDistance = 100 * delta;
-
-
         var rotateAngle = Math.PI / 2 * delta;
-
-
-
 
         //
         // if (keyboard.pressed("A"))
@@ -590,13 +660,46 @@
             camera.position.z = cameraOffset.z;
             camera.lookAt(car.position);
 
-
-
         }
         renderer.render(scene, camera);
         TWEEN.update();
         controls.update();
         requestAnimationFrame(animate);
+    }
+    function createPanel() {
+
+        var gui = new dat.GUI({width: -300});
+        var lightsFolder = gui.addFolder('Lights');
+
+        props = {
+            'Ambient Light': 0.5,
+            'Directional Light': false,
+            'Hemisphere Light': false,
+
+        };
+        lightsFolder.add(props, 'Ambient Light', 0, 1).step(0.01).onChange(function (value) {
+
+            ambientLight.intensity = value;
+
+        });
+        lightsFolder.add(props, 'Directional Light').onChange(btn2);
+        lightsFolder.add(props, 'Hemisphere Light').onChange(btn3);
+        lightsFolder.open();
+
+    }
+
+    function btn2() {
+        toggleVisible(directionalLight);
+    }
+
+    function btn3() {
+        toggleVisible(hemisphereLight);
+    }
+
+    function toggleVisible(p) {
+
+        p.visible = !p.visible;
+
     }
 
     function onDocumentKeyUp(event) {

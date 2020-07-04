@@ -4,13 +4,60 @@
     <meta charset="UTF-8">
     <title>game over</title>
     <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+    <script src="lib/three.js"></script>
+    <script src="lib/Detector.js"></script>
     <link rel="stylesheet" href="lib/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </head>
 <body >
+<embed src="music/taboot2.mp3" autostart="true" loop="true" hidden="true" ></embed>
+<embed src="movie/gameover.mp4.mp3" autostart="true" loop="true" hidden="true" ></embed>
 <div >
-    <img src="texture/g1.png" width="100%" height="600px">
+    <video controls width="1700" height="700"  loop autostart="true" >
+        <source src="movie/gameover.mp4"  type="video/mp4" autostart="true">
+    </video>
     <a href="start.html" class="btn btn-danger font-weight-bold  font-italic d-block py-4">start again</a>
 </div>
+<script>
+    var music;
+    var scene,camera,renderer;
+    init();
+    animate();
+    function init() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setClearColor(new THREE.Color(0x000000));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        var listener = new THREE.AudioListener();
+        camera.add(listener);
+        audioLoader = new THREE.AudioLoader();
+        music = new THREE.PositionalAudio(listener);
+        audioLoader.load('music/taboot2.mp3', function (buffer) {
+            music.setBuffer(buffer);
+            music.setRefDistance(50);
+            music.play();
+            music.loop = true;
+        });
+
+        scene.add(music);
+    }
+
+
+    function animate() {
+
+        delta = clock.getDelta();
+        controls.update(delta);
+        render();
+        requestAnimationFrame(animate);
+    }
+
+    function render() {
+
+        renderer.render(scene, camera);
+    }
+
+</script>
 </body>
 </html>
