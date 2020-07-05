@@ -4,15 +4,12 @@
     <title>laki in jungle</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="progressBar.css">
+
     <script src="lib/three.js"></script>
-    <script src="lib/Detector.js"></script>
     <script type="text/javascript" src="lib/Tween.js"></script>
-    <script type="text/javascript" src="lib/TrackballControls.js"></script>
     <script type="text/javascript" src="lib/OrbitControls.js"></script>
     <script type="text/javascript" src="lib/THREEx.KeyboardState.js"></script>
     <script type="text/javascript" src="lib/LegacyJSONLoader.js"></script>
-    <script type="text/javascript" src="lib/GLTFLoader.js"></script>
     <script type="text/javascript" src="lib/threex.loop.js"></script>
     <script type="text/javascript" src="lib/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/ShadowMapViewer.js"></script>
@@ -37,6 +34,7 @@
     </style>
 </head>
 <body>
+<!---------------------------------------------------- Top box  ------------------------------------------------------->
 <div style="background-color: #f5c6cb ; margin: 0">
 
     <h3 class="d-inline">Number of donuts eaten  <span class="badge badge-warning badge-pill " id="message">0</span></h3>
@@ -50,7 +48,7 @@
 
 
 </div>
-
+<!---------------------------------------------------- modal  ---------------------------------------------------------->
 <div id="myModal" class="modal">
 
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -78,6 +76,7 @@
 
     </div>
 </div>
+<!---------------------------------------------------- game ----------------------------------------------------------->
 <div class="container">
     <div id="web-gl"></div>
 </div>
@@ -111,6 +110,7 @@
 
     function init() {
 
+/******************************************** scene + camera + renderer ***********************************************/
         scene = new THREE.Scene();
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
@@ -131,7 +131,7 @@
         window.addEventListener('keyup', onDocumentKeyUp, false);
         window.addEventListener('resize', onWindowResize, false);
 
-        /********************************************************************************************************************/
+/********************************************** skybox ****************************************************************/
         var reflectionCube = new THREE.CubeTextureLoader()
             .setPath('texture/cube/skybox/')
             .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg']);
@@ -139,7 +139,7 @@
         scene = new THREE.Scene();
         scene.background = reflectionCube;
 
-        /********************************************************************************************************************/
+/*************************************************** laki *************************************************************/
         objectLoader2 = new THREE.ObjectLoader();
         objectLoader2.load("model/LAK/lak.json", function (obj) {
             var cubeGeometry = new THREE.CubeGeometry(0.5,0.5,1);
@@ -153,8 +153,7 @@
             lak.add(cubelak)
             scene.add(lak);
         });
-
-        /********************************************************************************************************************/
+/************************************************* music **************************************************************/
         var listener = new THREE.AudioListener();
         camera.add(listener);
         audioLoader = new THREE.AudioLoader();
@@ -167,7 +166,7 @@
         });
 
         scene.add(music);
-        /********************************************************************************************************************/
+/************************************************** trees *************************************************************/
         var  objectLoader = new THREE.ObjectLoader();
 
         objectLoader.load("model/tree/tree-un.json", function (obj) {
@@ -190,7 +189,7 @@
         });
 
         scene.add(trees);
-        /********************************************************************************************************************/
+/************************************************** bird & tween ******************************************************/
         objectLoader2 = new THREE.ObjectLoader();
         objectLoader2.load("model/bird/bird.json", function (obj) {
 
@@ -236,9 +235,7 @@
 
         });
 
-        scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
-
-        /********************************************************************************************************************/
+/************************************************ donut ***************************************************************/
         var pinkdonut='texture/yami.jfif';
         var browndonut='texture/brown.jpg';
         var colorfulldonut='texture/colorfull.jpg';
@@ -325,7 +322,8 @@
         }
 
         scene.add(donut);
-        //////////////////////////////////////////////////////////////////////////
+/********************************************** icecream shop (comment) ***********************************************/
+
         //         objectLoader3 = new THREE.ObjectLoader();
         //         objectLoader3.load("model/icecream/ice-cream-shop.json", function (obj) {
         //             obj.position.z = 0;
@@ -335,10 +333,9 @@
         //             ice=obj;
         //             scene.add(ice);
         //         });
-        /********************************************************************************************************************/
+/*************************************************** fog **************************************************************/
         scene.fog = new THREE.Fog(0xefd1b5, 0.1, 1200);
-        /********************************************************************************************************************/
-
+/************************************************* lights *************************************************************/
         ambientLight = new THREE.AmbientLight(0xdbdb87, 0.5);
         scene.add(ambientLight);
 
@@ -349,7 +346,7 @@
         hemisphereLight = new THREE.HemisphereLight(0xfffff1, 0x777788, 0.90);
         scene.add(hemisphereLight);
         hemisphereLight.visible = false;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/************************************************* surface *************************************************************/
 
         var texture = new THREE.TextureLoader().load('texture/grass_6.jpg');
         texture.repeat.set(100, 100);
@@ -365,26 +362,21 @@
         surfaceMesh.position.y = -50;
         scene.add(surfaceMesh);
 
-        /********************************************************************************************************************/
-
+/************************************************** control ***********************************************************/
         controls = new THREE.OrbitControls( camera, renderer.domElement );
-
     }
-
-
+/************************************************* WindowResize *******************************************************/
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
+/************************************************* text ***************************************************************/
     var text;
     function appendText( text) {
-
         document.getElementById('message').innerHTML = text;
     }
-
-
+/************************************************* rotat donut*********************************************************/
     function  rotat() {
         var t = (Date.now() / 700);
         for (var j = 0; j < 300; j++) {
@@ -395,15 +387,12 @@
             }
         }
         controls.update();
-
     }
-
-
-
+/********************************************* Guide to game over page ************************************************/
     function go2NewUrl(newUrl, sec) {
         setTimeout("location.href='" + newUrl + "'", sec * 1000);
     }
-    /***************************************************************************/
+/************************************************* collision tree *****************************************************/
     var  joon=100 ;
     function checktree() {
         for(var i=0; i < 150; i++) {
@@ -442,7 +431,7 @@
     looptree.start();
 
 
-    /************************************************************************************************/
+/************************************************* collision donut *****************************************************/
     function checkdonut() {
         for(var i=0; i < 300; i++) {
             var donutObj = donut.children[i];
@@ -462,11 +451,9 @@
     loopdonut.add(checkdonut);
     loopdonut.start();
 
-    /////////////////////////////////////////////////////////
-
+/****************************************************** timer *********************************************************/
     var seconds = 60;
     var el = document.getElementById('time');
-
 
     function incrementSeconds() {
         if(seconds) {
@@ -484,7 +471,7 @@
     }
     var cancel = setInterval(incrementSeconds, 1000);
 
-
+/************************************************** animation *********************************************************/
     function animate() {
 
         rotat();
@@ -522,6 +509,7 @@
         controls.update();
         requestAnimationFrame(animate);
     }
+/************************************************ panel for light *****************************************************/
     function createPanel() {
 
         var gui = new dat.GUI({width: -300});
@@ -569,7 +557,7 @@
         }
     }
 
-    //  Randomize target
+/******************************************** random target (for bird) ************************************************/
     function tweenbird() {
 
         target1.x = Math.random() * 1400 - 700;
@@ -590,10 +578,6 @@
     }
 
 </script>
-<div style="margin: 0">
-
-</div>
-
 
 </body>
 </html>
