@@ -72,6 +72,7 @@
             createPanel();
 
             function init() {
+                /******************************************** scene + camera + renderer ***********************************************/
 
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -90,6 +91,7 @@
                 camera.position.z = 300;
                 camera.lookAt(scene.position);
                 document.getElementById("web-gl").appendChild(renderer.domElement);
+                /************************************************ lights ***************************************************************/
 
                 ambientLight = new THREE.AmbientLight(0xffffff);
                 scene.add(ambientLight);
@@ -135,6 +137,7 @@
                 texture.wrapT = THREE.RepeatWrapping;
                 texture.magFilter = THREE.NearestFilter;
                 texture.minFilter = THREE.NearestFilter;
+                /************************************************* surface *************************************************************/
 
                 var surface = new THREE.PlaneGeometry(300, 350);
                 var surfaceMaterial = new THREE.MeshPhongMaterial({color: 0xcccccc, side: THREE.DoubleSide, map: texture});
@@ -167,7 +170,8 @@
                 surfaceMesh3.receiveShadow = true;
                 scene.add(surfaceMesh3);
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                /************************************************ donut ***************************************************************/
+
                 var donut1 = 'texture/makhmal.jpg';
                 var donut2 = 'texture/porz.jpg';
                 donut = new THREE.Object3D();
@@ -194,6 +198,7 @@
 
             }
 
+            /************************************************** animation *********************************************************/
 
             function animate() {
                 renderer.render(scene, camera);
@@ -216,6 +221,7 @@
                 torus2.rotation.y += 1.0 * frameTime;
                 requestAnimationFrame(animate);
             }
+            /************************************************ panel for light *****************************************************/
 
             function btn1() {
                 toggleVisible(ambientLight);
