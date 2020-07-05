@@ -81,8 +81,10 @@
                 document.body.appendChild(renderer.domElement);
 
                 controls = new THREE.OrbitControls( camera, renderer.domElement );
+
                 renderer.shadowMap.enabled = true;
                 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
                 camera.position.x = 30;
                 camera.position.y = 90;
                 camera.position.z = 300;
