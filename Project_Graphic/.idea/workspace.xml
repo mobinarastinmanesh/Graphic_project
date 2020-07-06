@@ -25,7 +25,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../PDF _UNIVERSITY/Graphics_982/Graphics-982 USC/3 ThreeJS/three.js-master" />
+    <property name="last_opened_file_path" value="E:/PDF _UNIVERSITY/Graphics_982/Graphics-982 USC/3 ThreeJS/three.js-master" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -49,11 +49,13 @@
       <workItem from="1592222745689" duration="282000" />
       <workItem from="1592223308387" duration="103000" />
       <workItem from="1593428697168" duration="605000" />
+      <workItem from="1594059412599" duration="171000" />
+      <workItem from="1594059665296" duration="25000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
     <state x="597" y="211" key="FileChooserDialogImpl" timestamp="1592222826396">
