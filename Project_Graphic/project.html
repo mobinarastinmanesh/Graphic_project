@@ -154,18 +154,18 @@
             scene.add(lak);
         });
 /************************************************* music **************************************************************/
-        var listener = new THREE.AudioListener();
-        camera.add(listener);
-        audioLoader = new THREE.AudioLoader();
-        music = new THREE.PositionalAudio(listener);
-        audioLoader.load('music/oggy.mp3', function (buffer) {
-            music.setBuffer(buffer);
-            music.setRefDistance(50);
-            music.play();
-            music.loop = true;
-        });
-
-        scene.add(music);
+        // var listener = new THREE.AudioListener();
+        // camera.add(listener);
+        // audioLoader = new THREE.AudioLoader();
+        // music = new THREE.PositionalAudio(listener);
+        // audioLoader.load('music/oggy.mp3', function (buffer) {
+        //     music.setBuffer(buffer);
+        //     music.setRefDistance(50);
+        //     music.play();
+        //     music.loop = true;
+        // });
+        //
+        // scene.add(music);
 /************************************************** trees *************************************************************/
         var  objectLoader = new THREE.ObjectLoader();
 
@@ -403,16 +403,16 @@
             var collision1 = firstBB1.intersectsBox(secondBB1);
             if(collision1) {
 
-                var listener = new THREE.AudioListener();
-                camera.add(listener);
-                audioLoader = new THREE.AudioLoader();
-                music2 = new THREE.PositionalAudio(listener);
-                audioLoader.load('music/1.mp3', function (buffer) {
-                    music2.setBuffer(buffer);
-                    music2.setRefDistance(15);
-                    music2.play();
-                });
-                trees.add(music2);
+                // var listener = new THREE.AudioListener();
+                // camera.add(listener);
+                // audioLoader = new THREE.AudioLoader();
+                // music2 = new THREE.PositionalAudio(listener);
+                // audioLoader.load('music/1.mp3', function (buffer) {
+                //     music2.setBuffer(buffer);
+                //     music2.setRefDistance(15);
+                //     music2.play();
+                // });
+                // trees.add(music2);
 
 
                 joon=joon-25;
